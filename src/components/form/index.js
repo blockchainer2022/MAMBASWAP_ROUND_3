@@ -109,7 +109,7 @@ const Index = ({
                   }`}
                 >
                   <Button secondary={true} onClick={submitHandler}>
-                    {account ? "Re-Invest" : "Connect"}
+                    {account ? "Transfer" : "Connect"}
                   </Button>
                 </div>
               </div>
