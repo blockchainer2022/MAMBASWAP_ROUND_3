@@ -11,3 +11,7 @@
     right: 40px;
   }
 } */
+
+form .MuiStepIcon-root.MuiStepIcon-completed {
+  color: #700da8;
+}

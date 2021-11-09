@@ -20,7 +20,6 @@ const Index = ({
   startTime,
   endTime,
   activeStep,
-  claim,
   claimBalance,
 }) => {
   // console.log(endTime < +Date.now());
@@ -53,7 +52,7 @@ const Index = ({
       setWalletOpen((prev) => !prev);
     }
     if (account) {
-      claim();
+      buy(Number(claimBalance));
     }
   };
 
@@ -71,7 +70,11 @@ const Index = ({
         <p className="block text-sm font-medium py-3 px-5 uppercase border-b-2 border-gary-400 dark:border-gray-500 ">
           Swap
         </p>
-        <form action="" className="max-w-sm mx-auto px-4 pt-3 pb-6">
+        <form
+          action=""
+          className="max-w-sm mx-auto px-4 pt-3 pb-6"
+          onSubmit={submitHandler}
+        >
           <div className="mt-4">
             {/* <Field value={bnb} handler={bnbHandler} balance={bnbBalance} />
             <span className="block text-center text-base my-1">
@@ -88,12 +91,19 @@ const Index = ({
             <span className="block text-xs mt-2 text-gray-500 text-center">
               1 BNB = {total2} MAMBA
             </span> */}
-            <h2 className="my-20 text-center text-5xl">{claimBalance} BNB</h2>
+            {activeStep >= 2 ? (
+              <h2 className="my-20 text-center text-2xl">
+                You Succesfully migrated to Round 3
+              </h2>
+            ) : (
+              <h2 className="my-20 text-center text-5xl">{claimBalance} BNB</h2>
+            )}
+
             <div className="grid grid-cols-2 gap-10">
               <div
                 className={`mt-8 swapbtn ${activeStep === 0 ? null : "active"}`}
               >
-                <Button secondary={true} onClick={submitHandler}>
+                <Button secondary={true}>
                   {account ? "Claim" : "Connect"}
                 </Button>
               </div>
@@ -158,6 +168,7 @@ const Field = ({
           placeholder="0"
           value={value}
           onChange={handler}
+          disabled
         />
         <div className="currency">
           <img src={icon} alt="" className="w-6 mr-2" />

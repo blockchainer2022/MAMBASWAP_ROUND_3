@@ -1,8 +1,8 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
-import { Timer, Form, Progress } from "../../components";
+import { Timer, Form, Form2, Progress } from "../../components";
 import moment from "moment";
 import "./style.css";
-
 const Index = ({
   account,
   buy,
@@ -15,6 +15,10 @@ const Index = ({
   loadWalleConnect,
   startTime,
   endTime,
+  activeStep,
+  claim,
+  claimBalance,
+  claimedBalance,
 }) => {
   var e = new Date(Number(endTime * 1000)).toUTCString();
   var s = new Date(Number(startTime * 1000)).toUTCString();
@@ -55,22 +59,41 @@ const Index = ({
             startTime={startTime}
             endTime={endTime}
           />
-          <Progress
+          {/* <Progress
             totalSupply={totalSupply}
             tokenSold={tokenSold}
             account={account}
-          />
-          <Form
-            icoPrice={icoPrice}
-            account={account}
-            buy={buy}
-            bnbBalance={bnbBalance}
-            userTokenBalance={userTokenBalance}
-            loadWeb3={loadWeb3}
-            loadWalleConnect={loadWalleConnect}
-            startTime={startTime}
-            endTime={endTime}
-          />
+          /> */}
+          {activeStep === 0 ? (
+            <Form
+              icoPrice={icoPrice}
+              account={account}
+              buy={buy}
+              claim={claim}
+              bnbBalance={bnbBalance}
+              userTokenBalance={userTokenBalance}
+              loadWeb3={loadWeb3}
+              loadWalleConnect={loadWalleConnect}
+              startTime={startTime}
+              endTime={endTime}
+              activeStep={activeStep}
+              claimBalance={claimBalance}
+            />
+          ) : (
+            <Form2
+              icoPrice={icoPrice}
+              account={account}
+              buy={buy}
+              bnbBalance={bnbBalance}
+              userTokenBalance={userTokenBalance}
+              loadWeb3={loadWeb3}
+              loadWalleConnect={loadWalleConnect}
+              startTime={startTime}
+              endTime={endTime}
+              activeStep={activeStep}
+              claimBalance={claimedBalance}
+            />
+          )}
         </div>
       </div>
     </section>

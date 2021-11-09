@@ -1,4 +1,23 @@
-export const contractAbi = [
+export const contractAbi2 = [
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "buyer",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "ICOReinvested",
+    type: "event",
+  },
   {
     anonymous: false,
     inputs: [
@@ -19,25 +38,6 @@ export const contractAbi = [
     type: "event",
   },
   {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "buyer",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
-      },
-    ],
-    name: "TokensPurchased",
-    type: "event",
-  },
-  {
     inputs: [],
     name: "ICOPrice",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
@@ -54,7 +54,13 @@ export const contractAbi = [
   {
     inputs: [
       { internalType: "uint256", name: "_amountTokenDesired", type: "uint256" },
-      { internalType: "uint256", name: "_amountETHMin", type: "uint256" },
+      { internalType: "uint256", name: "_amountBNB", type: "uint256" },
+      {
+        internalType: "uint256",
+        name: "_amountTokenDesiredMin",
+        type: "uint256",
+      },
+      { internalType: "uint256", name: "_amountBNBMin", type: "uint256" },
     ],
     name: "addLiquidity",
     outputs: [],
@@ -100,6 +106,13 @@ export const contractAbi = [
     inputs: [],
     name: "factory",
     outputs: [{ internalType: "address", name: "", type: "address" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "fundsClaimed",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
   },
@@ -255,7 +268,5 @@ export const contractAbi = [
     type: "function",
   },
 ];
-// export const contractAddress = "0x0cCE692e4dF6B413084d5CE6d6140FEfCB3BC325";
-// export const contractAddress = "0x2Ac14cb88CD16B3274c54D4814EFd7b871BcA1BC";
-// export const contractAddress = "0xcF0445705B998AD3ad70ab8898D84b944546fab2";
-export const contractAddress = "0xC9Fafc9f727E235B08293c099887972F6F0aDCf6";
+//   export const contractAddress = "0xC9Fafc9f727E235B08293c099887972F6F0aDCf6";
+export const contractAddress2 = "0xe23A2D46dFA3CFe123065f8E639Af6C4Ea1b121B";

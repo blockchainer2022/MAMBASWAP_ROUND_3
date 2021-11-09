@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Home from "./pages/Home";
 import Web3 from "web3";
 import { contractAbi, contractAddress } from "./config";
+import { contractAbi2, contractAddress2 } from "./config2";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { InformationModal, ConfirmationLoadingPopup } from "./components";
@@ -21,18 +22,28 @@ function App() {
   const [tokenSold, setTokenSold] = useState(0);
   const [userTokenBalance, setUserTokenBalance] = useState(0);
   //FOR POPUP
+  const [nftMinted, setNftMinted] = useState(false);
+  const [claimMinted, setClaimMinted] = useState(false);
+  const [nftMinting, setNftMinting] = useState(false);
+  const [claimMinting, setClaimMinting] = useState(false);
+  const [mintingInProgress, setMintingInProgress] = useState(false);
+  const [claimInProgress, setClaimInProgress] = useState(false);
+  const [confirmTransaction, setConfirmTransaction] = useState(false);
+  const [claimConfirmTransaction, setClaimConfirmTransaction] = useState(false);
+  const [lessValueWarn, setLessValueWarn] = useState(false);
+
   const [accessAccountDenied, setAccessAccountDenied] = useState(false);
   const [installEthereum, setInstallEthereum] = useState(false);
-  const [nftMinted, setNftMinted] = useState(false);
-  const [nftMinting, setNftMinting] = useState(false);
+  const [switchToMainnet, setswitchToMainnet] = useState(false);
   const [transactionRejected, setTransactionRejected] = useState(false);
   const [transactionFailed, setTransactionFailed] = useState(false);
-  const [switchToMainnet, setswitchToMainnet] = useState(false);
   const [ethereumCompatibleBrowser, setEthereumCompatibleBrowser] =
     useState(false);
-  const [mintingInProgress, setMintingInProgress] = useState(false);
-  const [confirmTransaction, setConfirmTransaction] = useState(false);
-  const [lessValueWarn, setLessValueWarn] = useState(false);
+
+  const [activeStep, setActiveStep] = useState(0);
+  const [claimBalance, setClaimBalance] = useState(0);
+  const [claimedBalance, setClaimedBalance] = useState(0);
+  console.log(claimBalance);
 
   // const [buyConfirm, setBuyConfirm] = useState(false);
 
@@ -105,6 +116,7 @@ function App() {
         // console.log("account:", account);
 
         const balance = await window.web3.eth.getBalance(accounts[0]);
+
         const balance_Eth = window.web3.utils.fromWei(balance, "ether");
         // console.log("balance:", balance);
         // console.log("balance_Eth:", balance_Eth);
@@ -118,35 +130,51 @@ function App() {
       }
     } else {
       setInstallEthereum(true);
-      // swal(
-      //   "",
-      //   "Please install an Ethereum-compatible browser or extension like MetaMask to use this dApp!",
-      //   "error"
-      // );
     }
   }
 
   useEffect(() => {
     const localAccount = localStorage.getItem("account");
+
     if (localAccount === "metamask") {
       loadWeb3();
     }
     if (localAccount === "walletconnect") {
       loadWalleConnect();
     }
+    const claimData = JSON.parse(localStorage.getItem("claimData"));
+    if (claimData) {
+      if (claimData.address === account && claimData.step) {
+        setActiveStep(Number(claimData.step));
+        setClaimedBalance(Number(claimData.claimedBnb));
+      }
+    }
+    console.log(claimData);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account]);
 
   const loadBlockchainData = async () => {
-    const contract = new window.web3.eth.Contract(contractAbi, contractAddress);
+    let contract = new window.web3.eth.Contract(contractAbi, contractAddress);
+    let test = contractAddress;
+    console.log(test);
+    const claimData = JSON.parse(localStorage.getItem("claimData"));
+
+    if (claimData) {
+      if (claimData.address === account && claimData.claimed === true) {
+        contract = new window.web3.eth.Contract(contractAbi2, contractAddress2);
+        test = contractAddress2;
+      }
+    }
     setContract(contract);
+    console.log(test);
     const chainId = await window.web3.eth.getChainId();
     setChainId(chainId);
     //success when chainId = 97 else failure
     // you are connected to main net
     // Please connect to main net
 
-    if (chainId === 56) {
+    if (chainId === 97) {
       toast(`You are connected to main net`, {
         type: "success",
         position: toast.POSITION.BOTTOM_CENTER,
@@ -174,11 +202,18 @@ function App() {
       const tokensold = await contract.methods.tokenSold().call();
       // const finalTokenSold = window.web3.utils.fromWei(tokensold, "ether");
       // console.log("tokenSold:", tokensold);
+      if (account) {
+        const claimed = await contract.methods.getBNBInvestment(account).call();
+        const finalClaimed = window.web3.utils.fromWei(claimed, "ether");
+        console.log(finalClaimed);
+        setClaimBalance(finalClaimed);
+      }
       setTokenSold(tokensold);
+      console.log(activeStep);
       const postTokens = async () => {
         try {
           const response = await axios.post(
-            "https://defi.mobiwebsolutionz.com/api/mamba/update.php",
+            "https://defi.mobiwebsolutionz.com/api/mamba/update-testnet.php",
             {
               startTime: startTime,
               endTime: endTime,
@@ -238,7 +273,7 @@ function App() {
 
   async function buy(buyAmount) {
     if (contract) {
-      if (chainId === 56) {
+      if (chainId === 97) {
         if (buyAmount === 0) {
           setLessValueWarn(true);
         } else {
@@ -276,9 +311,20 @@ function App() {
               //   content: el,
               //   icon: "success",
               // });
+              const claimdata = {
+                address: account,
+                step: 2,
+                claimed: true,
+                claimedBnb: claimBalance,
+              };
+              window.localStorage.setItem(
+                "claimData",
+                JSON.stringify(claimdata)
+              );
               setNftMinted(true);
               setConfirmTransaction(false);
               setMintingInProgress(false);
+              setActiveStep((prev) => prev + 1);
               // setBuyConfirm(true);
             })
             .on("error", function (error, receipt) {
@@ -310,6 +356,65 @@ function App() {
       setEthereumCompatibleBrowser(true);
     }
   }
+  async function claim() {
+    if (contract) {
+      if (chainId === 97) {
+        // if (buyAmount === 0) {
+        //   setLessValueWarn(true);
+        // } else {
+        setClaimConfirmTransaction(true);
+
+        await contract.methods
+          .claimInvestment()
+          .send({ from: account })
+          .on("transactionHash", function () {
+            setClaimConfirmTransaction(false);
+            setClaimInProgress(true);
+          })
+          .on("confirmation", function () {
+            const el = document.createElement("div");
+            el.innerHTML =
+              "View minted NFT on OpenSea : <a href='https://testnets.opensea.io/account '>View Now</a>";
+
+            const claimdata = {
+              address: account,
+              step: 1,
+              claimed: true,
+              claimedBnb: claimBalance,
+            };
+            window.localStorage.setItem("claimData", JSON.stringify(claimdata));
+            setClaimMinted(true);
+            setClaimConfirmTransaction(false);
+            setClaimInProgress(false);
+          })
+          .on("error", function (error, receipt) {
+            if (error.code === 4001) {
+              // swal("Transaction Rejected!", "", "error");
+              setClaimMinted(false);
+              setTransactionRejected(true);
+              setClaimConfirmTransaction(false);
+              setClaimInProgress(false);
+            } else {
+              // swal("Transaction Failed!", "", "error");
+              setTransactionFailed(true);
+              setClaimConfirmTransaction(false);
+              setClaimInProgress(false);
+              setClaimMinted(false);
+            }
+          });
+      } else {
+        // swal("Please switch to mainnet to buy Agod", "", "error");
+        setswitchToMainnet(true);
+      }
+    } else {
+      // swal(
+      //   "",
+      //   "Please install an Ethereum-compatible browser or extension like MetaMask to use this dApp!",
+      //   "error"
+      // );
+      setEthereumCompatibleBrowser(true);
+    }
+  }
 
   return (
     <div>
@@ -323,6 +428,10 @@ function App() {
         userTokenBalance={userTokenBalance}
         loadWeb3={loadWeb3}
         loadWalleConnect={loadWalleConnect}
+        activeStep={activeStep}
+        claim={claim}
+        claimBalance={claimBalance}
+        claimedBalance={claimedBalance}
       />
       <InformationModal
         open={lessValueWarn}
@@ -350,10 +459,23 @@ function App() {
         mint={true}
       />
       <InformationModal
+        open={claimMinted}
+        onClose={setClaimMinted}
+        title="Claim Successful"
+        text="You have successfully claim BNBs"
+        mint={true}
+      />
+      <InformationModal
         open={nftMinting}
         onClose={setNftMinting}
         title="Information"
         text="Purchasing NFT!"
+      />
+      <InformationModal
+        open={claimMinting}
+        onClose={setClaimMinting}
+        title="Information"
+        text="Claiming BNB!"
       />
       <InformationModal
         open={transactionRejected}
@@ -385,8 +507,18 @@ function App() {
         message="Confirm transaction to swap the BNBs with MAMBAs"
       />
       <ConfirmationLoadingPopup
+        open={claimConfirmTransaction}
+        title="Confirm Transaction"
+        message="Confirm transaction to claim BNBs "
+      />
+      <ConfirmationLoadingPopup
         open={mintingInProgress}
         title="Buying In Progress"
+        message="Please wait to get confirmation of the transaction from blockchain"
+      />
+      <ConfirmationLoadingPopup
+        open={claimInProgress}
+        title="Claiming In Progress"
         message="Please wait to get confirmation of the transaction from blockchain"
       />
     </div>

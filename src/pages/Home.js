@@ -16,6 +16,10 @@ const Home = ({
   bnbBalance,
   userTokenBalance,
   loadWalleConnect,
+  activeStep,
+  claim,
+  claimBalance,
+  claimedBalance,
 }) => {
   const [data, setData] = useState({});
 
@@ -23,7 +27,7 @@ const Home = ({
     const getData = async () => {
       try {
         const { data } = await axios.get(
-          "https://defi.mobiwebsolutionz.com/api/mamba/get-ico-details-live.php"
+          "https://defi.mobiwebsolutionz.com/api/mamba/get-ico-details-testnet.php"
         );
 
         setData(data.data);
@@ -53,6 +57,10 @@ const Home = ({
         loadWeb3={loadWeb3}
         startTime={data.startTime}
         endTime={data.endTime}
+        activeStep={activeStep}
+        claim={claim}
+        claimBalance={claimBalance}
+        claimedBalance={claimedBalance}
       />
     </div>
   );
