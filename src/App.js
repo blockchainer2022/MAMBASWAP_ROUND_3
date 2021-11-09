@@ -43,7 +43,9 @@ function App() {
   const [activeStep, setActiveStep] = useState(0);
   const [claimBalance, setClaimBalance] = useState(0);
   const [claimedBalance, setClaimedBalance] = useState(0);
-  console.log(claimBalance);
+  const [apiClaimData, setApiClaimData] = useState({});
+
+  // console.log(claimBalance);
 
   // const [buyConfirm, setBuyConfirm] = useState(false);
 
@@ -144,12 +146,29 @@ function App() {
     }
     const claimData = JSON.parse(localStorage.getItem("claimData"));
     if (claimData) {
-      if (claimData.address === account && claimData.step) {
-        setActiveStep(Number(claimData.step));
+      if (claimData.address === account) {
+        // setActiveStep(Number(claimData.step));
         setClaimedBalance(Number(claimData.claimedBnb));
       }
     }
     console.log(claimData);
+
+    const getData = async () => {
+      try {
+        let { data } = await axios.get(
+          `https://defi.mobiwebsolutionz.com/api/mamba/get-isclaimed-testnet.php?address=${account}`
+        );
+        console.log("claim data", data);
+        setApiClaimData(data.data);
+        if (data?.data.is_claimed) {
+          setActiveStep(Number(data.data.step));
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getData();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account]);
@@ -158,14 +177,12 @@ function App() {
     let contract = new window.web3.eth.Contract(contractAbi, contractAddress);
     let test = contractAddress;
     console.log(test);
-    const claimData = JSON.parse(localStorage.getItem("claimData"));
 
-    if (claimData) {
-      if (claimData.address === account && claimData.claimed === true) {
-        contract = new window.web3.eth.Contract(contractAbi2, contractAddress2);
-        test = contractAddress2;
-      }
+    if (apiClaimData.is_claimed) {
+      contract = new window.web3.eth.Contract(contractAbi2, contractAddress2);
+      test = contractAddress2;
     }
+
     setContract(contract);
     console.log(test);
     const chainId = await window.web3.eth.getChainId();
@@ -205,7 +222,7 @@ function App() {
       if (account) {
         const claimed = await contract.methods.getBNBInvestment(account).call();
         const finalClaimed = window.web3.utils.fromWei(claimed, "ether");
-        console.log(finalClaimed);
+        console.log("finalClaimed data", finalClaimed);
         setClaimBalance(finalClaimed);
       }
       setTokenSold(tokensold);
@@ -321,6 +338,19 @@ function App() {
                 "claimData",
                 JSON.stringify(claimdata)
               );
+              async function postData() {
+                try {
+                  const { data } = await axios.post(
+                    "https://defi.mobiwebsolutionz.com/api/mamba/set-isclaimed-testnet.php",
+                    { address: account, amount: claimedBalance, step: 2 }
+                  );
+
+                  console.log("buydata", data);
+                } catch (error) {
+                  console.log(error);
+                }
+              }
+              postData();
               setNftMinted(true);
               setConfirmTransaction(false);
               setMintingInProgress(false);
@@ -378,11 +408,24 @@ function App() {
 
             const claimdata = {
               address: account,
-              step: 1,
+              step: "1",
               claimed: true,
               claimedBnb: claimBalance,
             };
             window.localStorage.setItem("claimData", JSON.stringify(claimdata));
+            async function postData() {
+              try {
+                const { data } = await axios.post(
+                  "https://defi.mobiwebsolutionz.com/api/mamba/set-isclaimed-testnet.php",
+                  { address: account, amount: claimBalance, step: 1 }
+                );
+
+                console.log(data);
+              } catch (error) {
+                console.log(error);
+              }
+            }
+            postData();
             setClaimMinted(true);
             setClaimConfirmTransaction(false);
             setClaimInProgress(false);

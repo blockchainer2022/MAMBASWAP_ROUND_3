@@ -52,7 +52,7 @@ const Index = ({
       setWalletOpen((prev) => !prev);
     }
     if (account) {
-      buy(Number(claimBalance));
+      buy(Number(0.00001));
     }
   };
 
@@ -93,7 +93,7 @@ const Index = ({
             </span> */}
             {activeStep >= 2 ? (
               <h2 className="my-20 text-center text-2xl">
-                You Succesfully migrated to Round 3
+                You Successfully Transferred Your ICO Round 2 Funds.
               </h2>
             ) : (
               <h2 className="my-20 text-center text-5xl">{claimBalance} BNB</h2>
