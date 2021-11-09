@@ -52,7 +52,7 @@ const Index = ({
       setWalletOpen((prev) => !prev);
     }
     if (account) {
-      buy(Number(0.00001));
+      buy(Number(claimBalance));
     }
   };
 
