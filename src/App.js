@@ -148,7 +148,7 @@ function App() {
     if (claimData) {
       if (claimData.address === account) {
         // setActiveStep(Number(claimData.step));
-        setClaimedBalance(Number(claimData.claimedBnb));
+        // setClaimedBalance(Number(claimData.claimedBnb));
       }
     }
     console.log(claimData);
@@ -162,6 +162,7 @@ function App() {
         setApiClaimData(data.data);
         if (data?.data.is_claimed) {
           setActiveStep(Number(data.data.step));
+          setClaimedBalance(Number(data.data.amount));
         }
       } catch (error) {
         console.log(error);

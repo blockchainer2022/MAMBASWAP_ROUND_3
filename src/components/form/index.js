@@ -89,7 +89,28 @@ const Index = ({
               1 BNB = {total2} MAMBA
             </span> */}
             <h2 className="my-20 text-center text-5xl">{claimBalance} BNB</h2>
-            <div className="grid grid-cols-2 gap-10">
+            {account ? (
+              <div className="grid grid-cols-2 gap-10">
+                <div
+                  className={`mt-8 swapbtn ${
+                    activeStep === 0 ? null : "active"
+                  }`}
+                >
+                  <Button secondary={true} onClick={submitHandler}>
+                    {account ? "Claim" : "Connect"}
+                  </Button>
+                </div>
+                <div
+                  className={`mt-8 swapbtn ${
+                    activeStep === 1 ? null : "active"
+                  }`}
+                >
+                  <Button secondary={true} onClick={submitHandler}>
+                    {account ? "Re-Invest" : "Connect"}
+                  </Button>
+                </div>
+              </div>
+            ) : (
               <div
                 className={`mt-8 swapbtn ${activeStep === 0 ? null : "active"}`}
               >
@@ -97,12 +118,7 @@ const Index = ({
                   {account ? "Claim" : "Connect"}
                 </Button>
               </div>
-              <div
-                className={`mt-8 swapbtn ${activeStep === 1 ? null : "active"}`}
-              >
-                <Button secondary={true}>{account ? "Swap" : "Connect"}</Button>
-              </div>
-            </div>
+            )}
             <Stepper
               activeStep={activeStep}
               style={{ backgroundColor: "transparent" }}

@@ -70,11 +70,7 @@ const Index = ({
         <p className="block text-sm font-medium py-3 px-5 uppercase border-b-2 border-gary-400 dark:border-gray-500 ">
           Swap
         </p>
-        <form
-          action=""
-          className="max-w-sm mx-auto px-4 pt-3 pb-6"
-          onSubmit={submitHandler}
-        >
+        <form action="" className="max-w-sm mx-auto px-4 pt-3 pb-6">
           <div className="mt-4">
             {/* <Field value={bnb} handler={bnbHandler} balance={bnbBalance} />
             <span className="block text-center text-base my-1">
@@ -99,20 +95,36 @@ const Index = ({
               <h2 className="my-20 text-center text-5xl">{claimBalance} BNB</h2>
             )}
 
-            <div className="grid grid-cols-2 gap-10">
+            {account ? (
+              <div className="grid grid-cols-2 gap-10">
+                <div
+                  className={`mt-8 swapbtn ${
+                    activeStep === 0 ? null : "active"
+                  }`}
+                >
+                  <Button secondary={true} onClick={submitHandler}>
+                    {account ? "Claim" : "Connect"}
+                  </Button>
+                </div>
+                <div
+                  className={`mt-8 swapbtn ${
+                    activeStep === 1 ? null : "active"
+                  }`}
+                >
+                  <Button secondary={true} onClick={submitHandler}>
+                    {account ? "Re-Invest" : "Connect"}
+                  </Button>
+                </div>
+              </div>
+            ) : (
               <div
                 className={`mt-8 swapbtn ${activeStep === 0 ? null : "active"}`}
               >
-                <Button secondary={true}>
+                <Button secondary={true} onClick={submitHandler}>
                   {account ? "Claim" : "Connect"}
                 </Button>
               </div>
-              <div
-                className={`mt-8 swapbtn ${activeStep === 1 ? null : "active"}`}
-              >
-                <Button secondary={true}>{account ? "Swap" : "Connect"}</Button>
-              </div>
-            </div>
+            )}
             <Stepper
               activeStep={activeStep}
               style={{ backgroundColor: "transparent" }}
