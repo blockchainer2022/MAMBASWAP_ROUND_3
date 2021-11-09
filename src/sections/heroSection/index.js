@@ -22,10 +22,11 @@ const Index = ({
 }) => {
   var e = new Date(Number(endTime * 1000)).toUTCString();
   var s = new Date(Number(startTime * 1000)).toUTCString();
+  var newDate = new Date(Number(1636747199 * 1000)).toUTCString();
   const start = +new moment(`${s}`).utc() > +new Date();
   // const end = +new moment(`${s} 00:00:00`).utc() < +new Date();
 
-  const difference = +new moment(`${start ? s : e}`).utc() - +new Date();
+  const difference = +new moment(`${newDate}`).utc() - +new Date();
 
   const [days, setDays] = useState(0);
   const [hours, setHours] = useState(0);
