@@ -88,12 +88,15 @@ const Index = ({
             <span className="block text-xs mt-2 text-gray-500 text-center">
               1 BNB = {total2} MAMBA
             </span> */}
-            <h2 className="my-20 text-center text-5xl">{claimBalance} BNB</h2>
+            <p className="mt-14 text-center"> Claimable Balance</p>
+            <h2 className="mb-20 mt-4 text-center text-5xl">
+              {claimBalance} BNB
+            </h2>
             {account ? (
               <div className="grid grid-cols-2 gap-10">
                 <div
                   className={`mt-8 swapbtn ${
-                    activeStep === 0 ? null : "active"
+                    activeStep === 0 ? "active" : "active"
                   }`}
                 >
                   <Button secondary={true} onClick={submitHandler}>
@@ -102,7 +105,7 @@ const Index = ({
                 </div>
                 <div
                   className={`mt-8 swapbtn ${
-                    activeStep === 1 ? null : "active"
+                    activeStep === 1 ? "active" : "active"
                   }`}
                 >
                   <Button secondary={true} onClick={submitHandler}>
