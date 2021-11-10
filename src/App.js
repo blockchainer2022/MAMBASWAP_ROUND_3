@@ -43,7 +43,7 @@ function App() {
   const [activeStep, setActiveStep] = useState(0);
   const [claimBalance, setClaimBalance] = useState(0);
   const [claimedBalance, setClaimedBalance] = useState(0);
-  const [apiClaimData, setApiClaimData] = useState({});
+  // const [apiClaimData, setApiClaimData] = useState({});
 
   // console.log(claimBalance);
 
@@ -157,7 +157,7 @@ function App() {
           `https://defi.mobiwebsolutionz.com/api/mamba/get-isclaimed-testnet.php?address=${account}`
         );
         console.log("claim data", data);
-        setApiClaimData(data.data);
+        // setApiClaimData(data.data);
         if (data?.data.is_claimed) {
           setActiveStep(Number(data.data.step));
           setClaimedBalance(Number(data.data.amount));
@@ -181,7 +181,7 @@ function App() {
         `https://defi.mobiwebsolutionz.com/api/mamba/get-isclaimed-testnet.php?address=${account}`
       );
       // console.log("", data);
-      setApiClaimData(data.data);
+      // setApiClaimData(data.data);
       if (data?.data.is_claimed) {
         setActiveStep(Number(data.data.step));
         setClaimedBalance(Number(data.data.amount));
