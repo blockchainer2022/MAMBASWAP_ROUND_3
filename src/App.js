@@ -147,8 +147,6 @@ function App() {
     const claimData = JSON.parse(localStorage.getItem("claimData"));
     if (claimData) {
       if (claimData.address === account) {
-        // setActiveStep(Number(claimData.step));
-        // setClaimedBalance(Number(claimData.claimedBnb));
       }
     }
     console.log(claimData);
