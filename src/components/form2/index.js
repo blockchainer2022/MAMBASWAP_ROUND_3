@@ -68,7 +68,7 @@ const Index = ({
         style={{ boxShadow: "0px 0px 6px 0px rgba(0,0,0,0.16)" }}
       >
         <p className="block text-sm font-medium py-3 px-5 uppercase border-b-2 border-gary-400 dark:border-gray-500 ">
-          Swap
+          Transfer
         </p>
         <form action="" className="max-w-sm mx-auto px-4 pt-3 pb-6">
           <div className="mt-4">

@@ -13,7 +13,7 @@ const Timer = ({ days, hours, minutes, seconds, startTime, endTime }) => {
     <div className="border-2 border-primary py-2 w-full  rounded-lg dark:text-gray-50">
       <h6 className="text-center text-md relative pb-3">
         {/* {start ? "ICO Starts in" : end ? "ICO has ended" : "ICO ends in"} */}
-        ICO Starts in
+        ICO Launch in
       </h6>
       <div className="mx-auto mt-3 text-base text-center text-black dark:text-gray-50 font-bold font-sans">
         <span>

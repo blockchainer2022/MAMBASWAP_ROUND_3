@@ -84,13 +84,6 @@ export const contractAbi = [
   },
   {
     inputs: [],
-    name: "emergencyWithdraw",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "endTime",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
@@ -188,31 +181,6 @@ export const contractAbi = [
     type: "function",
   },
   {
-    inputs: [
-      { internalType: "address", name: "_tokenAddress", type: "address" },
-    ],
-    name: "setTokenAddress",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      { internalType: "address", name: "_tokenAddress", type: "address" },
-    ],
-    name: "setTokenAddress2",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "uint256", name: "_tokenSold", type: "uint256" }],
-    name: "setTokenSold",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
     inputs: [],
     name: "startTime",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
@@ -258,4 +226,5 @@ export const contractAbi = [
 // export const contractAddress = "0x0cCE692e4dF6B413084d5CE6d6140FEfCB3BC325";
 // export const contractAddress = "0x2Ac14cb88CD16B3274c54D4814EFd7b871BcA1BC";
 // export const contractAddress = "0xcF0445705B998AD3ad70ab8898D84b944546fab2";
-export const contractAddress = "0xC9Fafc9f727E235B08293c099887972F6F0aDCf6";
+// export const contractAddress = "0xC9Fafc9f727E235B08293c099887972F6F0aDCf6";
+export const contractAddress = "0x0CD8bb93f52C16b667e0e1c155699f7961dab790";
