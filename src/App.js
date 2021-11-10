@@ -176,10 +176,20 @@ function App() {
     let contract = new window.web3.eth.Contract(contractAbi, contractAddress);
     let test = contractAddress;
     console.log(test);
-
-    if (apiClaimData.is_claimed) {
-      contract = new window.web3.eth.Contract(contractAbi2, contractAddress2);
-      test = contractAddress2;
+    try {
+      let { data } = await axios.get(
+        `https://defi.mobiwebsolutionz.com/api/mamba/get-isclaimed-testnet.php?address=${account}`
+      );
+      // console.log("", data);
+      setApiClaimData(data.data);
+      if (data?.data.is_claimed) {
+        setActiveStep(Number(data.data.step));
+        setClaimedBalance(Number(data.data.amount));
+        contract = new window.web3.eth.Contract(contractAbi2, contractAddress2);
+        test = contractAddress2;
+      }
+    } catch (error) {
+      console.log(error);
     }
 
     setContract(contract);
