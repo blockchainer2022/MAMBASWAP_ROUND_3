@@ -104,7 +104,7 @@ const Index = ({
               <div className="grid grid-cols-2 gap-10">
                 <div
                   className={`mt-8 swapbtn ${
-                    activeStep === 0 ? "active" : "active"
+                    activeStep === 0 ? null : "active"
                   }`}
                 >
                   <Button secondary={true} onClick={submitHandler}>
@@ -113,7 +113,7 @@ const Index = ({
                 </div>
                 <div
                   className={`mt-8 swapbtn ${
-                    activeStep === 1 ? "active" : "active"
+                    activeStep === 1 ? null : "active"
                   }`}
                 >
                   <Button secondary={true} onClick={submitHandler}>
